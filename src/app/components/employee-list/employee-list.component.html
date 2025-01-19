@@ -1,0 +1,44 @@
+<!-- src/app/components/employee-list/employee-list.component.html -->
+<div class="employee-list">
+  <button mat-raised-button color="primary" (click)="openCreateDialog()">Add Employee</button>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- Column for ID -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <!-- Column for Name -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <!-- Column for Email -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+
+    <!-- Column for Actions -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-button (click)="openEditDialog(element)">Edit</button>
+        <button mat-button (click)="deleteEmployee(element.id)">Delete</button>
+      </td>
+    </ng-container>
+
+    <!-- Table Rows -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <!-- Pagination -->
+  <mat-paginator 
+    [length]="dataSource.data.length" 
+    [pageSize]="pageSize" 
+    (page)="pageChanged($event)">
+  </mat-paginator>
+</div>
