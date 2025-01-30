@@ -1,21 +1,41 @@
-<!-- src/app/components/employee-form/employee-form.component.html -->
-<h2 mat-dialog-title>{{ data ? 'Edit' : 'Create' }} Employee</h2>
+<h2 mat-dialog-title>{{ data ? 'Editar Empleado' : 'Crear Empleado' }}</h2>
+
 <mat-dialog-content>
   <form [formGroup]="form" (ngSubmit)="saveEmployee()">
-    <mat-form-field>
-      <mat-label>Name</mat-label>
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre</mat-label>
       <input matInput formControlName="name" />
-      <mat-error *ngIf="form.get('name')?.hasError('required')">Name is required</mat-error>
-      <mat-error *ngIf="form.get('name')?.hasError('minlength')">Name must be at least 2 characters long</mat-error>
+      <mat-error *ngIf="form.get('name')?.hasError('required')">
+        El nombre es obligatorio.
+      </mat-error>
+      <mat-error *ngIf="form.get('name')?.hasError('minlength')">
+        El nombre debe tener al menos 2 caracteres.
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
       <input matInput formControlName="email" />
-      <mat-error *ngIf="form.get('email')?.hasError('required')">Email is required</mat-error>
-      <mat-error *ngIf="form.get('email')?.hasError('email')">Enter a valid email</mat-error>
+      <mat-error *ngIf="form.get('email')?.hasError('required')">
+        El email es obligatorio.
+      </mat-error>
+      <mat-error *ngIf="form.get('email')?.hasError('email')">
+        Introduzca un email válido.
+      </mat-error>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Save</button>
+    <mat-form-field>
+      <mat-label>Puesto de trabajo</mat-label>
+      <input matInput formControlName="jobTitle" />
+      <mat-error *ngIf="form.get('jobTitle')?.hasError('required')">
+        Puesto de trabajo obligatorio
+      </mat-error>
+    </mat-form-field>
+    
+
+    <mat-dialog-actions align="end">
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Guardar</button>
+      <button mat-button type="button" (click)="dialogRef.close()">Cancelar</button>
+    </mat-dialog-actions>
   </form>
 </mat-dialog-content>

@@ -1,5 +1,4 @@
-// src/app/components/employee-form/employee-form.component.ts
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from '../../services/employee.service';
@@ -8,20 +7,19 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-employee-form',
+  standalone: true,
   templateUrl: './employee-form.component.html',
   styleUrls: ['./employee-form.component.css'],
-  standalone: true,
   imports: [
-    MatDialogModule,       // Importar el módulo de diálogos
-    MatInputModule,        // Importar el módulo de entradas (input)
-    MatFormFieldModule,    // Importar el módulo de campos de formulario
-    ReactiveFormsModule,   // Importar el módulo para formularios reactivos
-    BrowserAnimationsModule, // Necesario para animaciones de Angular Material
+    CommonModule,
+    MatDialogModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
   ],
 })
 export class EmployeeFormComponent {
@@ -30,27 +28,31 @@ export class EmployeeFormComponent {
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
-    public dialogRef: MatDialogRef<EmployeeFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Employee
+    @Optional() public dialogRef: MatDialogRef<EmployeeFormComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: Employee
   ) {
     this.form = this.fb.group({
       id: [data?.id || null],
       name: [data?.name || '', [Validators.required, Validators.minLength(2)]],
       email: [data?.email || '', [Validators.required, Validators.email]],
+      jobTitle: [data?.jobTitle || '', [Validators.required]],
     });
   }
 
   saveEmployee(): void {
     if (this.form.valid) {
       const employee = this.form.value;
+      console.log('Payload enviado:', employee);
 
       if (employee.id) {
-        this.employeeService.updateEmployee(employee.id, employee).subscribe(() => {
-          this.dialogRef.close(true);
+        this.employeeService.updateEmployee(employee.id, employee).subscribe({
+          next: () => this.dialogRef?.close(true),
+          error: (err) => console.error('Error updating employee:', err),
         });
       } else {
-        this.employeeService.createEmployee(employee).subscribe(() => {
-          this.dialogRef.close(true);
+        this.employeeService.createEmployee(employee).subscribe({
+          next: () => this.dialogRef?.close(true),
+          error: (err) => console.error('Error creating employee:', err),
         });
       }
     }

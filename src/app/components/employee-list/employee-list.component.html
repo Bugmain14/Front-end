@@ -1,44 +1,48 @@
-<!-- src/app/components/employee-list/employee-list.component.html -->
-<div class="employee-list">
-  <button mat-raised-button color="primary" (click)="openCreateDialog()">Add Employee</button>
+  <div class="container">
+    <h2>Lista Empleados</h2>
+    <button mat-raised-button color="primary" (click)="openCreateDialog()">Crear Empleado</button>
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <!-- Column for ID -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID </th>
-      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-    </ng-container>
+    <div class="table-container">
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-    <!-- Column for Name -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+        </ng-container>
 
-    <!-- Column for Email -->
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef> Email </th>
-      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-    </ng-container>
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+        </ng-container>
 
-    <!-- Column for Actions -->
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Actions </th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-button (click)="openEditDialog(element)">Edit</button>
-        <button mat-button (click)="deleteEmployee(element.id)">Delete</button>
-      </td>
-    </ng-container>
+        <ng-container matColumnDef="email">
+          <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+        </ng-container>
 
-    <!-- Table Rows -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+        <ng-container matColumnDef="jobTitle">
+          <mat-header-cell *matHeaderCellDef> Puesto de Trabajo </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.jobTitle}} </mat-cell>
+        </ng-container>
 
-  <!-- Pagination -->
-  <mat-paginator 
-    [length]="dataSource.data.length" 
-    [pageSize]="pageSize" 
-    (page)="pageChanged($event)">
-  </mat-paginator>
-</div>
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button mat-raised-button color="primary" (click)="openEditDialog(element)">Actualizar</button>
+            <button mat-raised-button color="warn" (click)="deleteEmployee(element.id)">Borrar</button>
+          </mat-cell>
+        </ng-container>
+        
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+
+    <mat-paginator
+      [length]="dataSource.data.length || 0"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 20]"
+      (page)="pageChanged($event)">
+    </mat-paginator>
+  </div>

@@ -1,4 +1,3 @@
-// src/app/services/employee.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -8,7 +7,10 @@ import { Employee } from '../models/employee';
   providedIn: 'root',
 })
 export class EmployeeService {
-  private apiUrl = 'http://localhost:8080/employees'; // URL de la API backend
+  subscribe(arg0: (employees: any) => void) {
+    throw new Error('Metodo no implementado.');
+  }
+  private apiUrl = 'http://localhost:8080/employees';
 
   constructor(private http: HttpClient) {}
 
